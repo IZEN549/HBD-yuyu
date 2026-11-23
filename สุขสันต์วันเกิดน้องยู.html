@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>สุขสันต์วันเกิด น้องยู 🎂✨</title>
+    <!-- โหลด Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- โหลดฟอนต์ภาษาไทยน่ารักๆ จาก Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mali:ital,wght@0,400;0,600;0,700;1,400&family=Prompt:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ตั้งค่าฟอนต์หลัก */
+        body {
+            font-family: 'Prompt', sans-serif;
+            overflow-x: hidden;
+            touch-action: manipulation;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .font-cute {
+            font-family: 'Mali', cursive;
+        }
+
+        /* พื้นหลังไล่เฉดสีพาสเทลสดใส */
+        .bg-pastel-sky {
+            background: linear-gradient(135deg, #FFF5F7 0%, #E0F2FE 50%, #FEF9C3 100%);
+        }
+
+        /* แอนิเมชันกล่องของขวัญเด้งดึ๋ง */
+        @keyframes bounce-gift {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-15px) scale(1.03); }
+        }
+        .animate-gift {
+            animation: bounce-gift 2s infinite ease-in-out;
+        }
+
+        /* แอนิเมชันสั่นเบาๆ ชวนให้กด */
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
+        }
+        .animate-wiggle {
+            animation: wiggle 1.5s infinite ease-in-out;
+        }
+
+        /* แอนิเมชันเปลวเทียนพริ้วไหว */
+        @keyframes flicker {
+            0%, 100% { transform: scale(1) rotate(-2deg); opacity: 1; }
+            25% { transform: scale(1.08) rotate(2deg); opacity: 0.95; }
+            50% { transform: scale(0.95) rotate(-1deg); opacity: 1; }
+            75% { transform: scale(1.05) rotate(1deg); opacity: 0.9; }
+        }
+        .flame-active {
+            transform-origin: center bottom;
+            animation: flicker 0.6s infinite alternate ease-in-out;
+        }
+
+        /* แอนิเมชันควันลอยขึ้นเมื่อเป่าเทียน */
+        @keyframes smoke-rise {
+            0% { transform: translateY(0) scale(0.5); opacity: 0.8; }
+            50% { transform: translateY(-25px) translateX(8px) scale(1.2); opacity: 0.5; }
+            100% { transform: translateY(-55px) translateX(-6px) scale(1.8); opacity: 0; }
+        }
+        .smoke-puff {
+            animation: smoke-rise 2s forwards ease-out;
+        }
+
+        /* แอนิเมชันลูกโป่งและหัวใจลอยขึ้น */
+        @keyframes float-up {
+            0% {
+                transform: translateY(100vh) rotate(0deg) scale(0.8);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-120vh) rotate(20deg) scale(1.1);
+                opacity: 0;
+            }
+        }
+        .floating-item {
+            position: fixed;
+            bottom: -60px;
+            pointer-events: none;
+            z-index: 40;
+            animation: float-up linear forwards;
+        }
+
+        /* เอฟเฟกต์เปิดการ์ด */
+        .fade-in-up {
+            animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* เงาการ์ดนุ่มนวล */
+        .card-shadow {
+            box-shadow: 0 20px 40px -15px rgba(244, 114, 182, 0.25), 0 0 20px rgba(56, 189, 248, 0.15);
+        }
+    </style>
+</head>
+<body class="bg-pastel-sky min-h-screen w-full relative overflow-x-hidden flex flex-col items-center justify-center text-slate-700">
+
+    <!-- Canvas สำหรับพลุกระดาษ (Confetti) -->
+    <canvas id="confetti-canvas" class="fixed inset-0 pointer-events-none z-50 w-full h-full"></canvas>
+
+    <!-- พื้นที่สำหรับลูกโป่งและดาวลอย -->
+    <div id="floating-container" class="fixed inset-0 pointer-events-none z-30 overflow-hidden"></div>
+
+    <!-- ==========================================
+         หน้าจอที่ 1: กล่องของขวัญต้อนรับ (กดเพื่อเปิด & ปลดล็อกเสียง)
+         ========================================== -->
+    <section id="welcome-screen" class="w-full max-w-md px-6 py-10 flex flex-col items-center justify-center text-center z-20 transition-all duration-500">
+        <div class="bg-white/80 backdrop-blur-md rounded-3xl p-8 card-shadow border-2 border-white w-full">
+            <span class="inline-block bg-pink-100 text-pink-600 font-cute font-bold text-sm px-4 py-1.5 rounded-full mb-4 shadow-sm">
+                ✨ มีของขวัญพิเศษส่งถึง ✨
+            </span>
+            
+            <h1 class="font-cute text-3xl sm:text-4xl font-bold text-slate-800 mb-2">
+                สุขสันต์วันเกิด
+            </h1>
+            <h2 class="font-cute text-4xl sm:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-purple-500 to-sky-500 mb-6 py-1">
+                "น้องยู" 🎈
+            </h2>
+
+            <!-- ปุ่มกล่องของขวัญ SVG น่ารักๆ -->
+            <button id="open-gift-btn" onclick="openBirthdayCard()" class="group relative mx-auto my-4 p-4 focus:outline-none cursor-pointer animate-gift" aria-label="เปิดกล่องของขวัญ">
+                <!-- แสงฟุ้งด้านหลังกล่อง -->
+                <div class="absolute inset-0 bg-yellow-300/40 rounded-full blur-2xl group-hover:bg-pink-400/40 transition-all duration-300"></div>
+                
+                <!-- SVG กล่องของขวัญ -->
+                <svg class="w-44 h-44 sm:w-52 sm:h-52 relative z-10 drop-shadow-xl transition-transform duration-300 group-active:scale-90" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- ตัวกล่อง -->
+                    <rect x="35" y="85" width="130" height="95" rx="16" fill="#FF6B9E"/>
+                    <rect x="35" y="85" width="130" height="20" fill="#E14B82" opacity="0.3"/>
+                    <!-- ริบบิ้นแนวตั้งตัวกล่อง -->
+                    <rect x="88" y="85" width="24" height="95" fill="#FFD166"/>
+                    <!-- ฝากล่อง -->
+                    <rect x="25" y="60" width="150" height="30" rx="12" fill="#FF85B3"/>
+                    <!-- ริบบิ้นฝากล่อง -->
+                    <rect x="88" y="60" width="24" height="30" fill="#FFE08A"/>
+                    <!-- โบว์ด้านบน -->
+                    <path d="M100 60C100 60 65 25 50 42C35 59 75 65 100 60Z" fill="#FFD166" stroke="#F4A261" stroke-width="3"/>
+                    <path d="M100 60C100 60 135 25 150 42C165 59 125 65 100 60Z" fill="#FFD166" stroke="#F4A261" stroke-width="3"/>
+                    <circle cx="100" cy="58" r="10" fill="#F4A261"/>
+                    <!-- ประกายวิ้งๆ -->
+                    <path d="M30 35L33 43L41 46L33 49L30 57L27 49L19 46L27 43L30 35Z" fill="#FBBF24"/>
+                    <path d="M170 25L172 31L178 33L172 35L170 41L168 35L162 33L168 31L170 25Z" fill="#38BDF8"/>
+                </svg>
+            </button>
+
+            <p class="font-cute text-lg text-pink-600 font-semibold mt-4 animate-pulse">
+                👆 แตะที่กล่องของขวัญเพื่อเปิดเลย!
+            </p>
+            <p class="text-xs text-slate-400 mt-2">
+                (อย่าลืมเปิดเสียงมือถือน้า 🎵)
+            </p>
+        </div>
+    </section>
+
+    <!-- ==========================================
+         หน้าจอที่ 2: การ์ดอวยพร เค้กเป่าเทียน และปุ่มเล่นสนุก
+         ========================================== -->
+    <main id="card-screen" class="hidden w-full max-w-md px-4 py-6 flex-col items-center z-20 space-y-5">
+        
+        <!-- แถบควบคุมเสียงเพลงด้านบน -->
+        <div class="w-full flex items-center justify-between bg-white/85 backdrop-blur-md px-4 py-2.5 rounded-2xl shadow-sm border border-white">
+            <div class="flex items-center space-x-2">
+                <span id="music-icon" class="text-xl animate-bounce">🎵</span>
+                <span id="music-status" class="text-xs sm:text-sm font-medium text-slate-600">กำลังเล่นเพลงวันเกิด...</span>
+            </div>
+            <div class="flex items-center space-x-2">
+                <button onclick="replaySong()" class="p-2 rounded-xl bg-sky-100 hover:bg-sky-200 text-sky-700 text-xs font-semibold transition active:scale-95" title="เล่นเพลงอีกรอบ">
+                    🔄 เล่นซ้ำ
+                </button>
+                <button id="toggle-music-btn" onclick="toggleMusic()" class="p-2 rounded-xl bg-pink-100 hover:bg-pink-200 text-pink-700 text-xs font-semibold transition active:scale-95">
+                    🔊 เปิดเสียง
+                </button>
+            </div>
+        </div>
+
+        <!-- การ์ดหลัก: หัวข้อ + เค้กวันเกิดเป่าเทียนได้ -->
+        <div class="w-full bg-white/90 backdrop-blur-md rounded-3xl p-6 card-shadow border-2 border-white text-center relative overflow-hidden">
+            <!-- ธงราวตกแต่งด้านบน -->
+            <div class="flex justify-center space-x-1 -mt-6 mb-3 opacity-90">
+                <div class="w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-t-[18px] border-t-pink-400"></div>
+                <div class="w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-t-[18px] border-t-yellow-400"></div>
+                <div class="w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-t-[18px] border-t-sky-400"></div>
+                <div class="w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-t-[18px] border-t-purple-400"></div>
+                <div class="w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-t-[18px] border-t-emerald-400"></div>
+                <div class="w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-t-[18px] border-t-pink-400"></div>
+                <div class="w-0 h-0 border-l-[12px] border-l-transparent border-r-[12px] border-r-transparent border-t-[18px] border-t-yellow-400"></div>
+            </div>
+
+            <span class="inline-block bg-gradient-to-r from-amber-100 to-pink-100 text-pink-600 font-cute font-bold text-xs px-3 py-1 rounded-full mb-1">
+                🎉 Happy Birthday to You 🎉
+            </span>
+            <h1 class="font-cute text-3xl sm:text-4xl font-bold text-slate-800">
+                สุขสันต์วันเกิด <span class="text-pink-500">น้องยู</span>!
+            </h1>
+
+            <!-- เค้กวันเกิด SVG (แตะที่เค้กหรือเทียนเพื่อเป่าได้) -->
+            <div class="relative my-3 flex flex-col items-center">
+                <div id="cake-wrapper" onclick="handleCandleClick()" class="cursor-pointer relative group p-2 rounded-2xl transition-transform active:scale-95" title="แตะเพื่อเป่าเทียน">
+                    <svg class="w-52 h-52 sm:w-56 sm:h-56 mx-auto drop-shadow-md" viewBox="0 0 220 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- จานรองเค้ก -->
+                        <ellipse cx="110" cy="195" rx="95" ry="14" fill="#E2E8F0"/>
+                        <ellipse cx="110" cy="192" rx="85" ry="10" fill="#F8FAFC"/>
+                        
+                        <!-- เค้กชั้นล่าง -->
+                        <rect x="35" y="135" width="150" height="55" rx="14" fill="#F472B6"/>
+                        <!-- ลายจุดบนเค้กชั้นล่าง -->
+                        <circle cx="55" cy="168" r="4" fill="#FDE047"/>
+                        <circle cx="82" cy="175" r="4" fill="#7DD3FC"/>
+                        <circle cx="110" cy="168" r="4" fill="#FDE047"/>
+                        <circle cx="138" cy="175" r="4" fill="#A7F3D0"/>
+                        <circle cx="165" cy="168" r="4" fill="#FDE047"/>
+                        <!-- ครีมหยดชั้นล่าง -->
+                        <path d="M35 142C35 135 45 135 55 135H165C175 135 185 135 185 142V150C185 156 177 156 175 150C173 144 165 144 163 152C161 160 151 160 149 151C147 143 139 143 137 153C135 162 123 162 121 151C119 143 111 143 109 153C107 162 95 162 93 151C91 143 83 143 81 153C79 162 67 162 65 151C63 143 55 143 53 151C51 158 41 158 39 150C37 145 35 146 35 142Z" fill="#FFF1F2"/>
+
+                        <!-- เค้กชั้นบน -->
+                        <rect x="55" y="90" width="110" height="46" rx="12" fill="#38BDF8"/>
+                        <!-- ครีมหยดชั้นบน -->
+                        <path d="M55 96C55 90 62 90 70 90H150C158 90 165 90 165 96V104C165 109 158 109 156 103C154 98 148 98 146 106C144 113 135 113 133 105C131 98 124 98 122 107C120 115 110 115 108 106C106 98 99 98 97 107C95 115 85 115 83 106C81 98 74 98 72 106C70 112 61 112 59 104C57 99 55 100 55 96Z" fill="#FFFFFF"/>
+
+                        <!-- สตรอว์เบอร์รีตกแต่ง -->
+                        <circle cx="70" cy="88" r="7" fill="#FB7185"/>
+                        <circle cx="150" cy="88" r="7" fill="#FB7185"/>
+
+                        <!-- แท่งเทียน -->
+                        <rect x="103" y="50" width="14" height="40" rx="4" fill="#FEF08A" stroke="#FACC15" stroke-width="1.5"/>
+                        <path d="M103 60L117 66M103 72L117 78" stroke="#F472B6" stroke-width="3" stroke-linecap="round"/>
+                        <!-- ไส้เทียน -->
+                        <line x1="110" y1="44" x2="110" y2="50" stroke="#475569" stroke-width="2.5" stroke-linecap="round"/>
+
+                        <!-- กลุ่มเปลวไฟเทียน (ซ่อนได้เมื่อเป่าดับ) -->
+                        <g id="candle-flame" class="flame-active">
+                            <!-- แสงเรืองรอบไฟ -->
+                            <circle cx="110" cy="30" r="18" fill="#FDE047" opacity="0.35"/>
+                            <!-- เปลวไฟชั้นนอก -->
+                            <path d="M110 12C110 12 122 25 122 34C122 40.6274 116.627 45 110 45C103.373 45 98 40.6274 98 34C98 25 110 12 110 12Z" fill="#F97316"/>
+                            <!-- เปลวไฟชั้นใน -->
+                            <path d="M110 20C110 20 117 28 117 34C117 37.866 113.866 41 110 41C106.134 41 103 37.866 103 34C103 28 110 20 110 20Z" fill="#FEF08A"/>
+                        </g>
+
+                        <!-- กลุ่มควันลอยขึ้น (แสดงเมื่อเป่าเทียน) -->
+                        <g id="candle-smoke" class="hidden">
+                            <circle cx="110" cy="40" r="5" fill="#94A3B8" opacity="0.6" class="smoke-puff"/>
+                            <circle cx="114" cy="34" r="7" fill="#CBD5E1" opacity="0.5" class="smoke-puff" style="animation-delay: 0.2s;"/>
+                            <circle cx="106" cy="28" r="6" fill="#94A3B8" opacity="0.4" class="smoke-puff" style="animation-delay: 0.4s;"/>
+                        </g>
+                    </svg>
+                </div>
+
+                <!-- ปุ่มเป่าเทียน / จุดเทียนใหม่ -->
+                <button id="blow-btn" onclick="handleCandleClick()" class="mt-1 px-6 py-2.5 rounded-full bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600 text-white font-cute font-bold text-base shadow-lg shadow-orange-200 transition transform active:scale-95 flex items-center space-x-2">
+                    <span id="blow-btn-icon">💨</span>
+                    <span id="blow-btn-text">อธิษฐานแล้วเป่าเทียนเลย!</span>
+                </button>
+                <p id="wish-feedback" class="text-xs text-emerald-600 font-semibold mt-2 h-4 transition-opacity opacity-0">
+                    ✨ เย้! ขอให้คำอธิษฐานของน้องยูเป็นจริงนะ! ✨
+                </p>
+            </div>
+        </div>
+
+        <!-- การ์ดคำอวยพรสำหรับเด็กที่กำลังเติบโต -->
+        <div class="w-full bg-white/90 backdrop-blur-md rounded-3xl p-6 card-shadow border-2 border-pink-100 text-center space-y-3">
+            <div class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-pink-100 text-pink-500 text-xl mb-1">
+                💌
+            </div>
+            <h2 class="font-cute text-xl font-bold text-pink-600">
+                คำอวยพรถึง "น้องยู" คนเก่ง
+            </h2>
+            <p class="text-slate-600 text-sm sm:text-base leading-relaxed font-normal">
+                "สุขสันต์วันเกิดนะจ๊ะ <span class="font-bold text-pink-500">น้องยู</span>! 🎂<br>
+                โตขึ้นอีกปีแล้ว ขอให้น้องยูเติบโตอย่างแข็งแรง สดใส ร่าเริง เป็นเด็กดีที่น่ารักของทุกๆ คน
+            </p>
+            <p class="text-slate-600 text-sm sm:text-base leading-relaxed font-normal">
+                ขอให้มีความสุขและสนุกกับการเรียนรู้สิ่งใหม่ๆ รอบตัว กล้าคิด กล้าทำในสิ่งที่ดี มีรอยยิ้มที่สดใสในทุกๆ วัน และรายล้อมไปด้วยความรักความอบอุ่นเสมอนะครับ/คะ 🌟🚀"
+            </p>
+            <div class="pt-2 flex justify-center space-x-2 text-lg">
+                <span>🌈</span><span>🦄</span><span>🚀</span><span>🎨</span><span>⭐</span>
+            </div>
+        </div>
+
+        <!-- แถบปุ่มกดส่งความสุข / ปล่อยลูกโป่ง / ส่งหัวใจบนมือถือ -->
+        <div class="w-full bg-white/85 backdrop-blur-md rounded-3xl p-4 card-shadow border border-white">
+            <p class="text-center font-cute text-sm font-bold text-slate-600 mb-3">
+                👇 กดส่งความสุขให้น้องยูกันเถอะ! 👇
+            </p>
+            <div class="grid grid-cols-3 gap-2.5">
+                <button onclick="spawnFloatingItems('🎈', 7)" class="py-3 px-2 rounded-2xl bg-sky-100 hover:bg-sky-200 active:bg-sky-300 text-sky-700 font-cute font-bold text-sm flex flex-col items-center justify-center transition active:scale-90 shadow-sm">
+                    <span class="text-2xl mb-1">🎈</span>
+                    <span>ปล่อยลูกโป่ง</span>
+                </button>
+                <button onclick="spawnFloatingItems('💖', 8)" class="py-3 px-2 rounded-2xl bg-pink-100 hover:bg-pink-200 active:bg-pink-300 text-pink-700 font-cute font-bold text-sm flex flex-col items-center justify-center transition active:scale-90 shadow-sm">
+                    <span class="text-2xl mb-1">💖</span>
+                    <span>ส่งหัวใจ</span>
+                </button>
+                <button onclick="triggerStarConfetti()" class="py-3 px-2 rounded-2xl bg-amber-100 hover:bg-amber-200 active:bg-amber-300 text-amber-700 font-cute font-bold text-sm flex flex-col items-center justify-center transition active:scale-90 shadow-sm">
+                    <span class="text-2xl mb-1">🌟</span>
+                    <span>โปรยดาว & พลุ</span>
+                </button>
+            </div>
+        </div>
+
+        <footer class="text-center text-xs text-slate-400 pb-4">
+            สร้างด้วยความรักเพื่อวันพิเศษของน้องยู 💛
+        </footer>
+    </main>
+
+    <script>
+        /* =================================================================
+           1. ระบบเสียงเพลง Happy Birthday ด้วย Web Audio API (เสียงกล่องดนตรีใสๆ)
+           ================================================================= */
+        let audioCtx = null;
+        let isPlaying = false;
+        let songTimeouts = [];
+
+        // โน้ตเพลง Happy Birthday (ความถี่ Hz และจังหวะเวลา)
+        const NOTES = {
+            'C4': 261.63, 'D4': 293.66, 'E4': 329.63, 'F4': 349.23,
+            'G4': 392.00, 'A4': 440.00, 'Bb4': 466.16, 'C5': 523.25
+        };
+
+        // ลำดับโน้ตเพลง Happy Birthday to You (คีย์ F Major ฟังอบอุ่นนุ่มนวล)
+        const HAPPY_BIRTHDAY_MELODY = [
+            // Hap-py Birth-day to you
+            { note: 'C4', duration: 0.35, delay: 0.0 },
+            { note: 'C4', duration: 0.25, delay: 0.4 },
+            { note: 'D4', duration: 0.60, delay: 0.7 },
+            { note: 'C4', duration: 0.60, delay: 1.4 },
+            { note: 'F4', duration: 0.60, delay: 2.1 },
+            { note: 'E4', duration: 1.10, delay: 2.8 },
+
+            // Hap-py Birth-day to you
+            { note: 'C4', duration: 0.35, delay: 4.1 },
+            { note: 'C4', duration: 0.25, delay: 4.5 },
+            { note: 'D4', duration: 0.60, delay: 4.8 },
+            { note: 'C4', duration: 0.60, delay: 5.5 },
+            { note: 'G4', duration: 0.60, delay: 6.2 },
+            { note: 'F4', duration: 1.10, delay: 6.9 },
+
+            // Hap-py Birth-day dear Nong Yoo
+            { note: 'C4', duration: 0.35, delay: 8.2 },
+            { note: 'C4', duration: 0.25, delay: 8.6 },
+            { note: 'C5', duration: 0.60, delay: 8.9 },
+            { note: 'A4', duration: 0.60, delay: 9.6 },
+            { note: 'F4', duration: 0.60, delay: 10.3 },
+            { note: 'E4', duration: 0.60, delay: 11.0 },
+            { note: 'D4', duration: 1.10, delay: 11.7 },
+
+            // Hap-py Birth-day to you
+            { note: 'Bb4', duration: 0.35, delay: 13.0 },
+            { note: 'Bb4', duration: 0.25, delay: 13.4 },
+            { note: 'A4', duration: 0.60, delay: 13.7 },
+            { note: 'F4', duration: 0.60, delay: 14.4 },
+            { note: 'G4', duration: 0.60, delay: 15.1 },
+            { note: 'F4', duration: 1.40, delay: 15.8 }
+        ];
+
+        // ฟังก์ชันสร้างเสียงตัวโน้ตสไตล์ Music Box / Electric Piano น่ารักๆ
+        function playMusicBoxNote(freq, duration) {
+            if (!audioCtx || !isPlaying) return;
+            try {
+                const now = audioCtx.currentTime;
+                
+                // Oscillator หลัก (Sine wave นุ่มนวล)
+                const osc1 = audioCtx.createOscillator();
+                // Oscillator เสริม (Triangle wave เพิ่มความใสแบบกล่องดนตรี)
+                const osc2 = audioCtx.createOscillator();
+                
+                const gainNode = audioCtx.createGain();
+
+                osc1.type = 'sine';
+                osc1.frequency.setValueAtTime(freq, now);
+
+                osc2.type = 'triangle';
+                osc2.frequency.setValueAtTime(freq * 2, now); // Octave สูงขึ้นเบาๆ
+
+                const osc2Gain = audioCtx.createGain();
+                osc2Gain.gain.setValueAtTime(0.08, now);
+
+                // ตั้งค่า Envelope (Attack / Decay) ให้เหมือนเคาะกล่องดนตรี
+                gainNode.gain.setValueAtTime(0.001, now);
+                gainNode.gain.exponentialRampToValueAtTime(0.28, now + 0.03);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, now + duration + 0.35);
+
+                osc1.connect(gainNode);
+                osc2.connect(osc2Gain);
+                osc2Gain.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+
+                osc1.start(now);
+                osc2.start(now);
+                osc1.stop(now + duration + 0.4);
+                osc2.stop(now + duration + 0.4);
+            } catch (e) {
+                console.warn('Audio note error:', e);
+            }
+        }
+
+        // เริ่มเล่นเพลง Happy Birthday
+        function startBirthdaySong() {
+            stopBirthdaySong();
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioContext();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            isPlaying = true;
+            updateMusicUI();
+
+            HAPPY_BIRTHDAY_MELODY.forEach(item => {
+                const timer = setTimeout(() => {
+                    if (isPlaying) {
+                        playMusicBoxNote(NOTES[item.note], item.duration);
+                    }
+                }, item.delay * 1000);
+                songTimeouts.push(timer);
+            });
+
+            // วนเล่นซ้ำอัตโนมัติเมื่อจบเพลง (หลังจาก 17.8 วินาที)
+            const loopTimer = setTimeout(() => {
+                if (isPlaying) {
+                    startBirthdaySong();
+                }
+            }, 17800);
+            songTimeouts.push(loopTimer);
+        }
+
+        // หยุดเพลงชั่วคราว
+        function stopBirthdaySong() {
+            isPlaying = false;
+            songTimeouts.forEach(id => clearTimeout(id));
+            songTimeouts = [];
+            updateMusicUI();
+        }
+
+        // ปุ่มสลับเปิด/ปิดเสียง
+        function toggleMusic() {
+            if (isPlaying) {
+                stopBirthdaySong();
+            } else {
+                startBirthdaySong();
+            }
+        }
+
+        // ปุ่มเล่นเพลงซ้ำตั้งแต่ต้น
+        function replaySong() {
+            startBirthdaySong();
+            playPopSound(600);
+        }
+
+        // อัปเดตสถานะปุ่มเพลงบนหน้าจอ
+        function updateMusicUI() {
+            const btn = document.getElementById('toggle-music-btn');
+            const status = document.getElementById('music-status');
+            const icon = document.getElementById('music-icon');
+            if (isPlaying) {
+                btn.innerHTML = '🔊 เปิดเสียง';
+                btn.className = 'p-2 rounded-xl bg-pink-100 hover:bg-pink-200 text-pink-700 text-xs font-semibold transition active:scale-95';
+                status.textContent = 'กำลังบรรเลงเพลงวันเกิด...';
+                icon.classList.add('animate-bounce');
+            } else {
+                btn.innerHTML = '🔇 ปิดเสียง';
+                btn.className = 'p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-600 text-xs font-semibold transition active:scale-95';
+                status.textContent = 'ปิดเสียงเพลงอยู่';
+                icon.classList.remove('animate-bounce');
+            }
+        }
+
+        // เสียงเอฟเฟกต์ป๊อปน่ารักๆ เวลากดปุ่ม
+        function playPopSound(startFreq = 450) {
+            if (!audioCtx) return;
+            try {
+                const now = audioCtx.currentTime;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(startFreq, now);
+                osc.frequency.exponentialRampToValueAtTime(startFreq * 1.8, now + 0.12);
+                gain.gain.setValueAtTime(0.15, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.13);
+            } catch (e) {}
+        }
+
+        /* =================================================================
+           2. ระบบเปิดกล่องของขวัญ & เป่าเทียนวันเกิด
+           ================================================================= */
+        let isCandleLit = true;
+
+        function openBirthdayCard() {
+            // 1. ปลดล็อกและเริ่มเล่นเพลง Happy Birthday ทันที
+            startBirthdaySong();
+
+            // 2. สลับหน้าจอจากกล่องของขวัญ ไปยังการ์ดอวยพร
+            const welcomeScreen = document.getElementById('welcome-screen');
+            const cardScreen = document.getElementById('card-screen');
+
+            welcomeScreen.classList.add('opacity-0', 'scale-90');
+            setTimeout(() => {
+                welcomeScreen.classList.add('hidden');
+                cardScreen.classList.remove('hidden');
+                cardScreen.classList.add('flex', 'fade-in-up');
+
+                // 3. ยิงพลุกระดาษและปล่อยลูกโป่งต้อนรับ!
+                launchConfetti(120);
+                spawnFloatingItems('🎈', 8);
+            }, 350);
+        }
+
+        function handleCandleClick() {
+            const flame = document.getElementById('candle-flame');
+            const smoke = document.getElementById('candle-smoke');
+            const btnText = document.getElementById('blow-btn-text');
+            const btnIcon = document.getElementById('blow-btn-icon');
+            const blowBtn = document.getElementById('blow-btn');
+            const feedback = document.getElementById('wish-feedback');
+
+            if (isCandleLit) {
+                // เป่าเทียนดับ!
+                isCandleLit = false;
+                flame.classList.add('hidden');
+                
+                // รีเซ็ตแอนิเมชันควันให้ลอยขึ้นใหม่ทุกครั้ง
+                smoke.classList.remove('hidden');
+                const puffs = smoke.querySelectorAll('.smoke-puff');
+                puffs.forEach(p => {
+                    p.style.animation = 'none';
+                    p.offsetHeight; /* trigger reflow */
+                    p.style.animation = null;
+                });
+
+                // เปลี่ยนปุ่มเป็นจุดเทียนใหม่
+                btnIcon.textContent = '🕯️';
+                btnText.textContent = 'จุดเทียนอธิษฐานอีกรอบ';
+                blowBtn.className = 'mt-1 px-6 py-2.5 rounded-full bg-gradient-to-r from-sky-400 to-indigo-500 hover:from-sky-500 hover:to-indigo-600 text-white font-cute font-bold text-base shadow-lg shadow-sky-200 transition transform active:scale-95 flex items-center space-x-2';
+                
+                feedback.classList.remove('opacity-0');
+                
+                // เอฟเฟกต์ฉลองเป่าเทียน
+                playWindBlowSound();
+                launchConfetti(90);
+                spawnFloatingItems('🎉', 6);
+            } else {
+                // จุดเทียนใหม่
+                isCandleLit = true;
+                flame.classList.remove('hidden');
+                smoke.classList.add('hidden');
+
+                btnIcon.textContent = '💨';
+                btnText.textContent = 'อธิษฐานแล้วเป่าเทียนเลย!';
+                blowBtn.className = 'mt-1 px-6 py-2.5 rounded-full bg-gradient-to-r from-amber-400 to-orange-500 hover:from-amber-500 hover:to-orange-600 text-white font-cute font-bold text-base shadow-lg shadow-orange-200 transition transform active:scale-95 flex items-center space-x-2';
+                
+                feedback.classList.add('opacity-0');
+                playPopSound(520);
+            }
+        }
+
+        // เสียงลมเป่าเบาๆ + เสียงวิ้งฉลอง
+        function playWindBlowSound() {
+            if (!audioCtx) return;
+            try {
+                const now = audioCtx.currentTime;
+                // สร้าง White Noise จำลองเสียงลมเป่า
+                const bufferSize = audioCtx.sampleRate * 0.4;
+                const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = Math.random() * 2 - 1;
+                }
+                const noise = audioCtx.createBufferSource();
+                noise.buffer = buffer;
+
+                const filter = audioCtx.createBiquadFilter();
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(600, now);
+
+                const gain = audioCtx.createGain();
+                gain.gain.setValueAtTime(0.2, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.4);
+
+                noise.connect(filter);
+                filter.connect(gain);
+                gain.connect(audioCtx.destination);
+                noise.start(now);
+            } catch (e) {}
+        }
+
+        /* =================================================================
+           3. ระบบลูกโป่งและหัวใจลอยขึ้นหน้าจอ
+           ================================================================= */
+        function spawnFloatingItems(emoji, count = 6) {
+            playPopSound(480);
+            const container = document.getElementById('floating-container');
+            
+            for (let i = 0; i < count; i++) {
+                const el = document.createElement('div');
+                el.className = 'floating-item';
+                el.textContent = emoji;
+                
+                // สุ่มตำแหน่งแนวนอน ขนาด และความเร็ว
+                const leftPos = Math.random() * 88 + 4; // 4% - 92%
+                const size = Math.random() * 18 + 26; // 26px - 44px
+                const duration = Math.random() * 2.5 + 3.5; // 3.5s - 6s
+                const delay = Math.random() * 0.6;
+
+                el.style.left = `${leftPos}vw`;
+                el.style.fontSize = `${size}px`;
+                el.style.animationDuration = `${duration}s`;
+                el.style.animationDelay = `${delay}s`;
+
+                container.appendChild(el);
+
+                // ลบ Element ออกเมื่อลอยพ้นหน้าจอ
+                setTimeout(() => {
+                    if (el.parentNode) el.parentNode.removeChild(el);
+                }, (duration + delay) * 1000 + 200);
+            }
+        }
+
+        function triggerStarConfetti() {
+            playPopSound(650);
+            launchConfetti(100);
+            spawnFloatingItems('⭐', 6);
+        }
+
+        /* =================================================================
+           4. ระบบพลุกระดาษ (Confetti Canvas)
+           ================================================================= */
+        const canvas = document.getElementById('confetti-canvas');
+        const ctx = canvas.getContext('2d');
+        let confettiParticles = [];
+        let animationFrameId = null;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const CONFETTI_COLORS = ['#FF6B9E', '#FFD166', '#38BDF8', '#A78BFA', '#34D399', '#FB923C'];
+
+        function launchConfetti(amount = 80) {
+            for (let i = 0; i < amount; i++) {
+                confettiParticles.push({
+                    x: canvas.width * (0.2 + Math.random() * 0.6),
+                    y: canvas.height * 0.45,
+                    vx: (Math.random() - 0.5) * 14,
+                    vy: (Math.random() - 1) * 14 - 4,
+                    size: Math.random() * 8 + 5,
+                    color: CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)],
+                    rotation: Math.random() * 360,
+                    rotationSpeed: (Math.random() - 0.5) * 10,
+                    shape: Math.random() > 0.5 ? 'rect' : 'circle'
+                });
+            }
+            if (!animationFrameId) {
+                updateConfetti();
+            }
+        }
+
+        function updateConfetti() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let i = confettiParticles.length - 1; i >= 0; i--) {
+                const p = confettiParticles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.35; // แรงโน้มถ่วง
+                p.vx *= 0.99; // แรงต้านอากาศ
+                p.rotation += p.rotationSpeed;
+
+                ctx.save();
+                ctx.translate(p.x, p.y);
+                ctx.rotate((p.rotation * Math.PI) / 180);
+                ctx.fillStyle = p.color;
+
+                if (p.shape === 'rect') {
+                    ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
+                } else {
+                    ctx.beginPath();
+                    ctx.arc(0, 0, p.size / 2, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+                ctx.restore();
+
+                // ลบชิ้นส่วนที่ตกพ้นขอบล่าง
+                if (p.y > canvas.height + 20) {
+                    confettiParticles.splice(i, 1);
+                }
+            }
+
+            if (confettiParticles.length > 0) {
+                animationFrameId = requestAnimationFrame(updateConfetti);
+            } else {
+                animationFrameId = null;
+            }
+        }
+    </script>
+</body>
+</html>
